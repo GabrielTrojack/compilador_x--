@@ -1,7 +1,47 @@
 %option yylineno
 %{
     #include <stdio.h>
+    #include <stdlib.h>
+    #include <string.h>
     int linha=1;
+
+    typedef struct No {
+        struct No* prox;
+        char *lexema;
+        char *tipo;
+    } No;
+
+    No* cabeca;
+
+    void insere(char *lex, char *tipo) {
+        No* atual = cabeca;
+
+        if (atual==NULL) {
+            cabeca = (No*) malloc(sizeof(No));
+            cabeca->lexema = lex;
+            cabeca->tipo = tipo;
+            cabeca->prox = NULL;
+        }
+        else {
+            while(atual->prox != NULL) {
+                atual = atual->prox;
+            }
+
+            No* novo = (No*) malloc(sizeof(No));
+            novo->lexema = lex;
+            novo->tipo = tipo;
+            novo->prox = NULL;
+            atual->prox = novo;
+        }
+    }
+
+    void imprime() {
+        No* atual = cabeca;
+        while(atual != NULL) {
+            printf("TOKEN: %s | LEXEMA: %s\n", atual->tipo, atual->lexema);
+            atual = atual->prox;
+        }
+    }
 %}
 
 RESERVADA ("fi"|"rof"|"elihw"|"esle"|"tuoc"|"tni"|"rahc"|"elboud"|"od"|"niam"|"gnirts")
@@ -18,44 +58,44 @@ STRING \"[^"\n]*\"
 
 "\n" {linha++;}
 
-{RESERVADA} {printf("Palavra_Reservada\n");}
+{RESERVADA} {insere(strdup(yytext), "RESERVADA");}
 
-{INTEIRO} {printf("Numero_Inteiro %s\n",yytext);}
+{INTEIRO} {insere(strdup(yytext), "INTEIRO");}
 
-{REAL} {printf("Numero_Real %s\n",yytext);}
+{REAL} {insere(strdup(yytext), "REAL");}
 
-{ID} {printf("Identificador\n");}
+{ID} {insere(strdup(yytext), "IDENTIFICADOR");}
 
-{STRING} {printf("String %s\n", yytext);}
+{STRING} {insere(strdup(yytext), "STRING");}
 
  /* Operadores */
 
-"+" {printf("Token de soma\n");}
+"+" {insere(strdup(yytext), "SOMA");}
 
-"-" {printf("Token de subtracao\n");}
+"-" {insere(strdup(yytext), "SUBTRACAO");}
 
-"/" {printf("Token de divisao\n");}
+"/" {insere(strdup(yytext), "DIVISAO");}
 
-"*" {printf("Token de multiplicacao\n");}
+"*" {insere(strdup(yytext), "MULTIPLICACAO");}
 
-"%" {printf("Token de resto\n");}
+"%" {insere(strdup(yytext), "RESTO");}
 
-"=" {printf("Token de atribuicao\n");}
+"=" {insere(strdup(yytext), "ATRIBUICAO");}
 
-">"|"<"|"=="|">="|"<="|"!=" {printf("Token relacional\n");}
+">"|"<"|"=="|">="|"<="|"!=" {insere(strdup(yytext), "RELACIONAL");}
 
  /* Separadores */
 " " {}
 
-"(" {printf("Abre_Parentesis\n");}
+"(" {insere(strdup(yytext), "ABRE_PARENTESES");}
 
-")" {printf("Fecha_Parentesis\n");}
+")" {insere(strdup(yytext), "FECHA_PARENTESES");}
 
-"{" {printf("Abre_Chaves\n");}
+"{" {insere(strdup(yytext), "ABRE_CHAVES");}
 
-"}" {printf("Fecha_Chaves\n");}
+"}" {insere(strdup(yytext), "FECHA_CHAVES");}
 
-";" {printf("Ponto_Virgula\n");}
+";" {insere(strdup(yytext), "PONTO_VIRGULA");}
 
 
  /* Erros Léxicos */
@@ -82,7 +122,18 @@ int yywrap(){
 }
 
 int main(){
-    yyin = fopen("fonte2.txt", "r");
+    printf("Digite o nome do arquivo para se abrir: ");
+    char nome[100];
+    scanf("%s", nome);
+
+    yyin = fopen(nome, "r");
+    if (yyin == NULL) {
+        printf("Nao foi possivel abrir o arquivo\n");
+        return 0;
+    }
+
     yylex();
+
+    imprime();
     return 0;
 }

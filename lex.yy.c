@@ -513,9 +513,49 @@ char *yytext;
 #line 1 "x--.l"
 #line 3 "x--.l"
     #include <stdio.h>
+    #include <stdlib.h>
+    #include <string.h>
     int linha=1;
-#line 517 "lex.yy.c"
-#line 518 "lex.yy.c"
+
+    typedef struct No {
+        struct No* prox;
+        char *lexema;
+        char *tipo;
+    } No;
+
+    No* cabeca;
+
+    void insere(char *lex, char *tipo) {
+        No* atual = cabeca;
+
+        if (atual==NULL) {
+            cabeca = (No*) malloc(sizeof(No));
+            cabeca->lexema = lex;
+            cabeca->tipo = tipo;
+            cabeca->prox = NULL;
+        }
+        else {
+            while(atual->prox != NULL) {
+                atual = atual->prox;
+            }
+
+            No* novo = (No*) malloc(sizeof(No));
+            novo->lexema = lex;
+            novo->tipo = tipo;
+            novo->prox = NULL;
+            atual->prox = novo;
+        }
+    }
+
+    void imprime() {
+        No* atual = cabeca;
+        while(atual != NULL) {
+            printf("TOKEN: %s | LEXEMA: %s\n", atual->tipo, atual->lexema);
+            atual = atual->prox;
+        }
+    }
+#line 557 "lex.yy.c"
+#line 558 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -732,10 +772,10 @@ YY_DECL
 		}
 
 	{
-#line 17 "x--.l"
+#line 57 "x--.l"
 
 
-#line 738 "lex.yy.c"
+#line 778 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -805,136 +845,136 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 19 "x--.l"
+#line 59 "x--.l"
 {linha++;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 21 "x--.l"
-{printf("Palavra_Reservada\n");}
+#line 61 "x--.l"
+{insere(strdup(yytext), "RESERVADA");}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 23 "x--.l"
-{printf("Numero_Inteiro %s\n",yytext);}
+#line 63 "x--.l"
+{insere(strdup(yytext), "INTEIRO");}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 25 "x--.l"
-{printf("Numero_Real %s\n",yytext);}
+#line 65 "x--.l"
+{insere(strdup(yytext), "REAL");}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 27 "x--.l"
-{printf("Identificador\n");}
+#line 67 "x--.l"
+{insere(strdup(yytext), "IDENTIFICADOR");}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 29 "x--.l"
-{printf("String %s\n", yytext);}
+#line 69 "x--.l"
+{insere(strdup(yytext), "STRING");}
 	YY_BREAK
 /* Operadores */
 case 7:
 YY_RULE_SETUP
-#line 33 "x--.l"
-{printf("Token de soma\n");}
+#line 73 "x--.l"
+{insere(strdup(yytext), "SOMA");}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 35 "x--.l"
-{printf("Token de subtracao\n");}
+#line 75 "x--.l"
+{insere(strdup(yytext), "SUBTRACAO");}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 37 "x--.l"
-{printf("Token de divisao\n");}
+#line 77 "x--.l"
+{insere(strdup(yytext), "DIVISAO");}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 39 "x--.l"
-{printf("Token de multiplicacao\n");}
+#line 79 "x--.l"
+{insere(strdup(yytext), "MULTIPLICACAO");}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 41 "x--.l"
-{printf("Token de resto\n");}
+#line 81 "x--.l"
+{insere(strdup(yytext), "RESTO");}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 43 "x--.l"
-{printf("Token de atribuicao\n");}
+#line 83 "x--.l"
+{insere(strdup(yytext), "ATRIBUICAO");}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 45 "x--.l"
-{printf("Token relacional\n");}
+#line 85 "x--.l"
+{insere(strdup(yytext), "RELACIONAL");}
 	YY_BREAK
 /* Separadores */
 case 14:
 YY_RULE_SETUP
-#line 48 "x--.l"
+#line 88 "x--.l"
 {}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 50 "x--.l"
-{printf("Abre_Parentesis\n");}
+#line 90 "x--.l"
+{insere(strdup(yytext), "ABRE_PARENTESES");}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 52 "x--.l"
-{printf("Fecha_Parentesis\n");}
+#line 92 "x--.l"
+{insere(strdup(yytext), "FECHA_PARENTESES");}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 54 "x--.l"
-{printf("Abre_Chaves\n");}
+#line 94 "x--.l"
+{insere(strdup(yytext), "ABRE_CHAVES");}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 56 "x--.l"
-{printf("Fecha_Chaves\n");}
+#line 96 "x--.l"
+{insere(strdup(yytext), "FECHA_CHAVES");}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 58 "x--.l"
-{printf("Ponto_Virgula\n");}
+#line 98 "x--.l"
+{insere(strdup(yytext), "PONTO_VIRGULA");}
 	YY_BREAK
 /* Erros Léxicos */
 case 20:
 YY_RULE_SETUP
-#line 62 "x--.l"
+#line 102 "x--.l"
 {
     printf("ERRO LEXICO: Numero mal formado (%s) linha %d\n",yytext, linha);
 }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 66 "x--.l"
+#line 106 "x--.l"
 {
     printf("ERRO LEXICO: ID nao podem comecar com digitos (%s) linha %d\n",yytext, linha);
 }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 70 "x--.l"
+#line 110 "x--.l"
 {
     printf("ERRO LEXICO: Caracter invalido (%s) linha %d\n",yytext, linha);
 }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 74 "x--.l"
+#line 114 "x--.l"
 { 
     printf("ERRO LEXICO: String mal formada (%s) linha %d\n",yytext, linha);
 }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 78 "x--.l"
+#line 118 "x--.l"
 ECHO;
 	YY_BREAK
-#line 937 "lex.yy.c"
+#line 977 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1949,7 +1989,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 78 "x--.l"
+#line 118 "x--.l"
 
 
 int yywrap(){
@@ -1957,7 +1997,18 @@ int yywrap(){
 }
 
 int main(){
-    yyin = fopen("fonte2.txt", "r");
+    printf("Digite o nome do arquivo para se abrir: ");
+    char nome[100];
+    scanf("%s", nome);
+
+    yyin = fopen(nome, "r");
+    if (yyin == NULL) {
+        printf("Nao foi possivel abrir o arquivo\n");
+        return 0;
+    }
+
     yylex();
+
+    imprime();
     return 0;
 }
