@@ -515,47 +515,10 @@ char *yytext;
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
+    #include "listaencadeada.c"
     int linha=1;
-
-    typedef struct No {
-        struct No* prox;
-        char *lexema;
-        char *tipo;
-    } No;
-
-    No* cabeca;
-
-    void insere(char *lex, char *tipo) {
-        No* atual = cabeca;
-
-        if (atual==NULL) {
-            cabeca = (No*) malloc(sizeof(No));
-            cabeca->lexema = lex;
-            cabeca->tipo = tipo;
-            cabeca->prox = NULL;
-        }
-        else {
-            while(atual->prox != NULL) {
-                atual = atual->prox;
-            }
-
-            No* novo = (No*) malloc(sizeof(No));
-            novo->lexema = lex;
-            novo->tipo = tipo;
-            novo->prox = NULL;
-            atual->prox = novo;
-        }
-    }
-
-    void imprime() {
-        No* atual = cabeca;
-        while(atual != NULL) {
-            printf("TOKEN: %s | LEXEMA: %s\n", atual->tipo, atual->lexema);
-            atual = atual->prox;
-        }
-    }
-#line 557 "lex.yy.c"
-#line 558 "lex.yy.c"
+#line 520 "lex.yy.c"
+#line 521 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -772,10 +735,10 @@ YY_DECL
 		}
 
 	{
-#line 57 "x--.l"
+#line 20 "x--.l"
 
 
-#line 778 "lex.yy.c"
+#line 741 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -845,136 +808,136 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 59 "x--.l"
+#line 22 "x--.l"
 {linha++;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 61 "x--.l"
+#line 24 "x--.l"
 {insere(strdup(yytext), "RESERVADA");}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 63 "x--.l"
+#line 26 "x--.l"
 {insere(strdup(yytext), "INTEIRO");}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 65 "x--.l"
+#line 28 "x--.l"
 {insere(strdup(yytext), "REAL");}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 67 "x--.l"
+#line 30 "x--.l"
 {insere(strdup(yytext), "IDENTIFICADOR");}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 69 "x--.l"
+#line 32 "x--.l"
 {insere(strdup(yytext), "STRING");}
 	YY_BREAK
 /* Operadores */
 case 7:
 YY_RULE_SETUP
-#line 73 "x--.l"
+#line 36 "x--.l"
 {insere(strdup(yytext), "SOMA");}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 75 "x--.l"
+#line 38 "x--.l"
 {insere(strdup(yytext), "SUBTRACAO");}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 77 "x--.l"
+#line 40 "x--.l"
 {insere(strdup(yytext), "DIVISAO");}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 79 "x--.l"
+#line 42 "x--.l"
 {insere(strdup(yytext), "MULTIPLICACAO");}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 81 "x--.l"
+#line 44 "x--.l"
 {insere(strdup(yytext), "RESTO");}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 83 "x--.l"
+#line 46 "x--.l"
 {insere(strdup(yytext), "ATRIBUICAO");}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 85 "x--.l"
+#line 48 "x--.l"
 {insere(strdup(yytext), "RELACIONAL");}
 	YY_BREAK
 /* Separadores */
 case 14:
 YY_RULE_SETUP
-#line 88 "x--.l"
+#line 51 "x--.l"
 {}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 90 "x--.l"
+#line 53 "x--.l"
 {insere(strdup(yytext), "ABRE_PARENTESES");}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 92 "x--.l"
+#line 55 "x--.l"
 {insere(strdup(yytext), "FECHA_PARENTESES");}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 94 "x--.l"
+#line 57 "x--.l"
 {insere(strdup(yytext), "ABRE_CHAVES");}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 96 "x--.l"
+#line 59 "x--.l"
 {insere(strdup(yytext), "FECHA_CHAVES");}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 98 "x--.l"
+#line 61 "x--.l"
 {insere(strdup(yytext), "PONTO_VIRGULA");}
 	YY_BREAK
 /* Erros Léxicos */
 case 20:
 YY_RULE_SETUP
-#line 102 "x--.l"
+#line 65 "x--.l"
 {
     printf("ERRO LEXICO: Numero mal formado (%s) linha %d\n",yytext, linha);
 }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 106 "x--.l"
+#line 69 "x--.l"
 {
     printf("ERRO LEXICO: ID nao podem comecar com digitos (%s) linha %d\n",yytext, linha);
 }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 110 "x--.l"
+#line 73 "x--.l"
 {
     printf("ERRO LEXICO: Caracter invalido (%s) linha %d\n",yytext, linha);
 }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 114 "x--.l"
+#line 77 "x--.l"
 { 
     printf("ERRO LEXICO: String mal formada (%s) linha %d\n",yytext, linha);
 }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 118 "x--.l"
+#line 81 "x--.l"
 ECHO;
 	YY_BREAK
-#line 977 "lex.yy.c"
+#line 940 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1989,7 +1952,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 118 "x--.l"
+#line 81 "x--.l"
 
 
 int yywrap(){
