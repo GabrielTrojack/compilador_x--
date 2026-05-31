@@ -1,18 +1,17 @@
 %option yylineno
 %{
     #include <stdio.h>
-    int linha=1;
 %}
 
 LETRA [a-zA-Z]
 DIGITO [0-9]
-ID {LETRA}({LETRA}|{DIGITO})
+RESERVADA ("fi"|"rof"|"elihw"|"esle"|"tuoc"|"tni"|"rahc"|"elboud"|"od"|"niam"|gnirts)
+ID {LETRA}({LETRA}|{DIGITO})*
 
 INTEIRO ("+"|"-")?{DIGITO}+
 REAL {DIGITO}+"."{DIGITO}+
 STRING {\"[^"\n]*\"}  
 
-RESERVADA ("fi"|"rof"|"elihw"|"esle"|"tuoc"|"tni"|"rahc"|"elboud"|"od"|"niam")
 
 %%
 
@@ -23,6 +22,8 @@ RESERVADA ("fi"|"rof"|"elihw"|"esle"|"tuoc"|"tni"|"rahc"|"elboud"|"od"|"niam")
 {ID} {printf("Identificador\n");}
 
 {RESERVADA} {printf("Palavra_Reservada\n");}
+
+{STRING} {printf("String %s\n", yytext);}
 
 /* Operadores */
 
@@ -77,7 +78,7 @@ int yywrap(){
 }
 
 int main(){
-    yyin = fopen("arquivo.txt", "r");
+    yyin = fopen("fonte1.txt", "r");
     yylex();
     return 0;
 }

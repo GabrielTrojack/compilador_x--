@@ -1,6 +1,0 @@
-
-tni niam(){
-    rof(tni i=3;i<=30;i=i+3){
-        tuoc<<i;
-    }
-}

@@ -1,0 +1,11 @@
+tni niam {
+    tni x1 = 10;
+    gnirts a1 = "aa";
+    elboud valor2 = 12.34;
+
+    x1 = x1 + 5;
+
+    fi (x1 >= 10){
+        x1 = x1 - 6;
+    }
+}
