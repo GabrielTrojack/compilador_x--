@@ -1,5 +1,6 @@
 %option yylineno
 %{
+    #include "syntax.tab.h"
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
@@ -80,23 +81,23 @@ STRING \"[^"\n]*\"
 
 %%
 
-int yywrap(){
-    return 1;
-}
+// int yywrap(){
+//     return 1;
+// }
 
-int main(){
-    printf("Digite o nome do arquivo para se abrir: ");
-    char nome[100];
-    scanf("%s", nome);
+// int main(){
+//     printf("Digite o nome do arquivo para se abrir: ");
+//     char nome[100];
+//     scanf("%s", nome);
 
-    yyin = fopen(nome, "r");
-    if (yyin == NULL) {
-        printf("Nao foi possivel abrir o arquivo\n");
-        return 0;
-    }
+//     yyin = fopen(nome, "r");
+//     if (yyin == NULL) {
+//         printf("Nao foi possivel abrir o arquivo\n");
+//         return 0;
+//     }
 
-    yylex();
+//     yylex();
 
-    imprime();
-    return 0;
-}
+//     imprime();
+//     return 0;
+// }
