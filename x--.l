@@ -5,15 +5,16 @@
     #include <stdlib.h>
     #include <string.h>
     #include "listaencadeada.c"
+    #include "tabelareservadas.h"
+    #include "tabelasimbolos.h"
     int linha=1;
 %}
 
-RESERVADA ("fi"|"rof"|"elihw"|"esle"|"tuoc"|"tni"|"rahc"|"elboud"|"od"|"niam"|"gnirts")
 LETRA [a-zA-Z]
 DIGITO [0-9]
 ID {LETRA}({LETRA}|{DIGITO})*
 
-INTEIRO ("+"|"-")?{DIGITO}+
+INTEIRO {DIGITO}+
 REAL {DIGITO}+"."{DIGITO}+
 STRING \"[^"\n]*\"
 
@@ -22,44 +23,51 @@ STRING \"[^"\n]*\"
 
 "\n" {linha++;}
 
-{RESERVADA} {insere(strdup(yytext), "RESERVADA");}
+{INTEIRO} {insere(strdup(yytext), "INTEIRO"); return INTEIRO;}
 
-{INTEIRO} {insere(strdup(yytext), "INTEIRO");}
+{REAL} {insere(strdup(yytext), "REAL");return REAL;}
 
-{REAL} {insere(strdup(yytext), "REAL");}
+{ID} {
+    int token = buscaReservada(yytext);
+    if (token != -1) {
+        insere(strdup(yytext), "RESERVADA");
+        return token;
+    }
+    insereSimbolo(yytext, linha);
+    insere(strdup(yytext), "IDENTIFICADOR");
+    return IDENTIFICADOR;
+}
 
-{ID} {insere(strdup(yytext), "IDENTIFICADOR");}
-
-{STRING} {insere(strdup(yytext), "STRING");}
+{STRING} {insere(strdup(yytext), "STRING");return STRING;}
 
  /* Operadores */
 
-"+" {insere(strdup(yytext), "SOMA");}
+"+" {insere(strdup(yytext), "SOMA"); return SOMA;}
 
-"-" {insere(strdup(yytext), "SUBTRACAO");}
+"-" {insere(strdup(yytext), "SUBTRACAO"); return SUBTRACAO;}
 
-"/" {insere(strdup(yytext), "DIVISAO");}
+"/" {insere(strdup(yytext), "DIVISAO"); return DIVISAO;}
 
-"*" {insere(strdup(yytext), "MULTIPLICACAO");}
+"*" {insere(strdup(yytext), "MULTIPLICACAO"); return MULTIPLICACAO;}
 
-"%" {insere(strdup(yytext), "RESTO");}
+"%" {insere(strdup(yytext), "RESTO"); return RESTO;}
 
-"=" {insere(strdup(yytext), "ATRIBUICAO");}
+"=" {insere(strdup(yytext), "ATRIBUICAO"); return ATRIBUICAO;}
 
-">"|"<"|"=="|">="|"<="|"!=" {insere(strdup(yytext), "RELACIONAL");}
+">"|"<"|"=="|">="|"<="|"!=" {insere(strdup(yytext), "RELACIONAL"); return RELACIONAL;}
 
  /* Separadores */
 " " {}
 
-"(" {insere(strdup(yytext), "ABRE_PARENTESES");}
+"(" {insere(strdup(yytext), "ABRE_PARENTESES"); return ABRE_PARENTESES;}
 
-")" {insere(strdup(yytext), "FECHA_PARENTESES");}
+")" {insere(strdup(yytext), "FECHA_PARENTESES"); return FECHA_CHAVES;}
 
-"{" {insere(strdup(yytext), "ABRE_CHAVES");}
+"{" {insere(strdup(yytext), "ABRE_CHAVES"); return ABRE_CHAVES;}
 
-"}" {insere(strdup(yytext), "FECHA_CHAVES");}
+"}" {insere(strdup(yytext), "FECHA_CHAVES"); return FECHA_CHAVES;}
 
-";" {insere(strdup(yytext), "PONTO_VIRGULA");}
+";" {insere(strdup(yytext), "PONTO_VIRGULA"); return PONTO_VIRGULA;}
 
 
  /* Erros Léxicos */
